@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class DbConnection {
     //static reference to itself
     private static DbConnection instance = new DbConnection();
-    public static final String URL = "jdbc:mysql://localhost/jdbcdb";
+    public static final String URL = "jdbc:mysql://localhost/juegosolimpicos";
     public static final String USER = "root";
     public static final String PASSWORD = " root";
     public static final String DRIVER_CLASS = "com.mysql.jdbc.Driver"; 
