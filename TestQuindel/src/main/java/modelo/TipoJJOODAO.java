@@ -7,23 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CiudadDAO {
+public class TipoJJOODAO {
 	private Connection connection;
 	private PreparedStatement statement;
 
-	public CiudadDAO() {
+	public TipoJJOODAO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void create(Ciudad ciudad) {
-		String query = "INSERT INTO CIUDAD (ID_CIUDAD,NOMBRE_CIUDAD,ID_PAIS,VALOR_CIUDAD)VALUES (?,?,?,?)";
+	public void create(TipoJJOO tipoJJOO) {
+		String query = "INSERT INTO TIPO_JJOO (ID_TIPO_JJOO,DESCRIPCION_TIPO)VALUES (?,?)";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, ciudad.getID_CIUDAD());
-			statement.setString(2, ciudad.getNOMBRE_CIUDAD());
-			statement.setInt(3, ciudad.getID_PAIS());
-			statement.setInt(4, ciudad.getVALOR_CIUDAD());
+			statement.setInt(1, tipoJJOO.getID_TIPO_JJOO());
+			statement.setString(2, tipoJJOO.getDESCRIPCION_TIPO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -33,35 +31,33 @@ public class CiudadDAO {
 		}
 	}
 
-	public Ciudad read(int idCiudad) throws SQLException {
-		String query = "SELECT * FROM CIUDAD WHERE ID_CIUDAD= ?";
+	public TipoJJOO read(int año) throws SQLException {
+		String query = "SELECT * FROM TIPO_JJOO WHERE ID_TIPO_JJOO= ?";
 		ResultSet rs = null;
-		Ciudad ciudad = null;
+		TipoJJOO tipoJJOO = null;
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, idCiudad);
+			statement.setInt(1, año);
 			rs = statement.executeQuery();
-			if(rs.first());
-			ciudad = new Ciudad(rs.getInt("ID_CIUDAD"), rs.getString("NOMBRE_CIUDAD"), rs.getInt("ID_PAIS"),
-					rs.getInt("VALOR_CIUDAD"));
+			if (rs.first())
+				;
+			tipoJJOO = new TipoJJOO(rs.getInt("ID_TIPO_JJOO"), rs.getString("DESCRIPCION_TIPO"));
 		} finally {
 			DbUtil.close(rs);
 			DbUtil.close(statement);
 			DbUtil.close(connection);
 		}
-		return ciudad;
+		return tipoJJOO;
 	}
 
-	public void update(Ciudad ciudad) {
-		String query = "UPDATE INTO CIUDAD SET NOMBRE_CIUDAD=?,ID_PAIS=?, VALOR_CIUDAD=? WHERE ID_CIUDAD=?";
+	public void update(TipoJJOO tipoJJOO) {
+		String query = "UPDATE INTO TIPO_JJOO SET DESCRIPCION_TIPO=? WHERE ID_TIPO_JJOO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setString(1, ciudad.getNOMBRE_CIUDAD());
-			statement.setInt(2, ciudad.getID_PAIS());
-			statement.setInt(3, ciudad.getVALOR_CIUDAD());
-			statement.setInt(4, ciudad.getID_CIUDAD());
+			statement.setString(1, tipoJJOO.getDESCRIPCION_TIPO());
+			statement.setInt(2, tipoJJOO.getID_TIPO_JJOO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -71,15 +67,15 @@ public class CiudadDAO {
 		}
 	}
 
-	public void delete(Ciudad ciudad) {
+	public void delete(TipoJJOO tipoJJOO) {
 		/*
 		 * DELETE FROM table_name WHERE some_column=some_value;
 		 */
-		String query = "DELETE FROM CIUDAD WHERE ID_CIUDAD=?";
+		String query = "DELETE FROM TIPO_JJOO WHERE ID_TIPO_JJOO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, ciudad.getID_CIUDAD());
+			statement.setInt(1, tipoJJOO.getID_TIPO_JJOO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,19 +84,19 @@ public class CiudadDAO {
 			DbUtil.close(connection);
 		}
 	}
-	
-	public List<Ciudad> listAll(){
-		String query = "SELECT * FROM CIUDAD";
+
+	public List<TipoJJOO> listAll() {
+		String query = "SELECT * FROM TIPO_JJOO";
 		ResultSet rs = null;
-		List<Ciudad> ciudades = new ArrayList<>();
+		List<TipoJJOO> tipos = new ArrayList<>();
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
 			rs = statement.executeQuery();
-			while(rs.next()){
-				ciudades.add(new Ciudad(rs.getInt("ID_CIUDAD"), rs.getString("NOMBRE_CIUDAD"), rs.getInt("ID_PAIS"),rs.getInt("VALOR_CIUDAD")));
+			while (rs.next()) {
+				tipos.add(new TipoJJOO(rs.getInt("ID_TIPO_JJOO"), rs.getString("DESCRIPCION_TIPO")));
 			}
-	
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -108,7 +104,6 @@ public class CiudadDAO {
 			DbUtil.close(statement);
 			DbUtil.close(connection);
 		}
-		return ciudades;
+		return tipos;
 	}
-
 }

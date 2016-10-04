@@ -1,8 +1,8 @@
 package modelo;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DbUtil {
 	public static void close(Connection connection) {
@@ -15,7 +15,7 @@ public class DbUtil {
         }
     }
  
-    public static void close(Statement statement) {
+    public static void close(PreparedStatement statement) {
         if (statement != null) {
             try {
                 statement.close();

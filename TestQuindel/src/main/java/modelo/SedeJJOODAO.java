@@ -7,23 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CiudadDAO {
+public class SedeJJOODAO {
 	private Connection connection;
 	private PreparedStatement statement;
 
-	public CiudadDAO() {
+	public SedeJJOODAO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void create(Ciudad ciudad) {
-		String query = "INSERT INTO CIUDAD (ID_CIUDAD,NOMBRE_CIUDAD,ID_PAIS,VALOR_CIUDAD)VALUES (?,?,?,?)";
+	public void create(SedeJJOO sedeJJOO) {
+		String query = "INSERT INTO SEDE_JJOO (AÑO,ID_TIPO_JJOO,SEDE)VALUES (?,?,?)";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, ciudad.getID_CIUDAD());
-			statement.setString(2, ciudad.getNOMBRE_CIUDAD());
-			statement.setInt(3, ciudad.getID_PAIS());
-			statement.setInt(4, ciudad.getVALOR_CIUDAD());
+			statement.setInt(1, sedeJJOO.getAÑO());
+			statement.setInt(2, sedeJJOO.getID_TIPO_JJOO());
+			statement.setInt(3, sedeJJOO.getSEDE());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -33,35 +32,34 @@ public class CiudadDAO {
 		}
 	}
 
-	public Ciudad read(int idCiudad) throws SQLException {
-		String query = "SELECT * FROM CIUDAD WHERE ID_CIUDAD= ?";
+	public SedeJJOO read(int año) throws SQLException {
+		String query = "SELECT * FROM SEDE_JJOO WHERE AÑO= ?";
 		ResultSet rs = null;
-		Ciudad ciudad = null;
+		SedeJJOO sedeJJOO = null;
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, idCiudad);
+			statement.setInt(1, año);
 			rs = statement.executeQuery();
-			if(rs.first());
-			ciudad = new Ciudad(rs.getInt("ID_CIUDAD"), rs.getString("NOMBRE_CIUDAD"), rs.getInt("ID_PAIS"),
-					rs.getInt("VALOR_CIUDAD"));
+			if (rs.first())
+				;
+			sedeJJOO = new SedeJJOO(rs.getInt("AÑO"), rs.getInt("ID_TIPO_JJOO"), rs.getInt("SEDE"));
 		} finally {
 			DbUtil.close(rs);
 			DbUtil.close(statement);
 			DbUtil.close(connection);
 		}
-		return ciudad;
+		return sedeJJOO;
 	}
 
-	public void update(Ciudad ciudad) {
-		String query = "UPDATE INTO CIUDAD SET NOMBRE_CIUDAD=?,ID_PAIS=?, VALOR_CIUDAD=? WHERE ID_CIUDAD=?";
+	public void update(SedeJJOO sedeJJOO) {
+		String query = "UPDATE INTO SEDE_JJOO SET ID_TIPO_JJOO=?,SEDE=? WHERE AÑO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setString(1, ciudad.getNOMBRE_CIUDAD());
-			statement.setInt(2, ciudad.getID_PAIS());
-			statement.setInt(3, ciudad.getVALOR_CIUDAD());
-			statement.setInt(4, ciudad.getID_CIUDAD());
+			statement.setInt(1, sedeJJOO.getID_TIPO_JJOO());
+			statement.setInt(2, sedeJJOO.getSEDE());
+			statement.setInt(3, sedeJJOO.getAÑO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -71,15 +69,15 @@ public class CiudadDAO {
 		}
 	}
 
-	public void delete(Ciudad ciudad) {
+	public void delete(SedeJJOO sedeJJOO) {
 		/*
 		 * DELETE FROM table_name WHERE some_column=some_value;
 		 */
-		String query = "DELETE FROM CIUDAD WHERE ID_CIUDAD=?";
+		String query = "DELETE FROM SEDE_JJOO WHERE AÑO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, ciudad.getID_CIUDAD());
+			statement.setInt(1, sedeJJOO.getAÑO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,19 +86,19 @@ public class CiudadDAO {
 			DbUtil.close(connection);
 		}
 	}
-	
-	public List<Ciudad> listAll(){
-		String query = "SELECT * FROM CIUDAD";
+
+	public List<SedeJJOO> listAll() {
+		String query = "SELECT * FROM SEDE_JJOO";
 		ResultSet rs = null;
-		List<Ciudad> ciudades = new ArrayList<>();
+		List<SedeJJOO> sedes = new ArrayList<>();
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
 			rs = statement.executeQuery();
-			while(rs.next()){
-				ciudades.add(new Ciudad(rs.getInt("ID_CIUDAD"), rs.getString("NOMBRE_CIUDAD"), rs.getInt("ID_PAIS"),rs.getInt("VALOR_CIUDAD")));
+			while (rs.next()) {
+				sedes.add(new SedeJJOO(rs.getInt("AÑO"), rs.getInt("ID_TIPO_JJOO"), rs.getInt("SEDE")));
 			}
-	
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -108,7 +106,6 @@ public class CiudadDAO {
 			DbUtil.close(statement);
 			DbUtil.close(connection);
 		}
-		return ciudades;
+		return sedes;
 	}
-
 }
