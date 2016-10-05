@@ -33,7 +33,7 @@ public class PaisDAO {
 		}
 	}
 
-	public Pais read(int idPais) throws SQLException {
+	public Pais read(int idPais) {
 		String query = "SELECT * FROM PAIS WHERE ID_PAIS= ?";
 		ResultSet rs = null;
 		Pais pais = null;
@@ -42,9 +42,14 @@ public class PaisDAO {
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, idPais);
 			rs = statement.executeQuery();
-			if(rs.first());
-			pais = new Pais(rs.getInt("ID_PAIS"), rs.getString("NOMBRE_PAIS"), rs.getString("CODIGO_PAIS"),
-					rs.getInt("VALOR_PAIS"));
+			if(rs.first()){
+				pais = new Pais(rs.getInt("ID_PAIS"), rs.getString("NOMBRE_PAIS"), rs.getString("CODIGO_PAIS"),
+						rs.getInt("VALOR_PAIS"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			DbUtil.close(rs);
 			DbUtil.close(statement);
@@ -54,7 +59,7 @@ public class PaisDAO {
 	}
 
 	public void update(Pais pais) {
-		String query = "UPDATE INTO PAIS SET NOMBRE_PAIS=?,CODIGO_PAIS=?, VALOR_PAIS=? WHERE ID_PAIS=?";
+		String query = "UPDATE PAIS SET NOMBRE_PAIS=?,CODIGO_PAIS=?, VALOR_PAIS=? WHERE ID_PAIS=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);			
@@ -90,7 +95,7 @@ public class PaisDAO {
 	}
 	
 	public List<Pais> listAll(){
-		String query = "SELECT * FROM CIUDAD";
+		String query = "SELECT * FROM PAIS";
 		ResultSet rs = null;
 		List<Pais> paises = new ArrayList<>();
 		try {

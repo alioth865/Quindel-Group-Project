@@ -31,18 +31,21 @@ public class TipoJJOODAO {
 		}
 	}
 
-	public TipoJJOO read(int año) throws SQLException {
+	public TipoJJOO read(int idTipo) {
 		String query = "SELECT * FROM TIPO_JJOO WHERE ID_TIPO_JJOO= ?";
 		ResultSet rs = null;
 		TipoJJOO tipoJJOO = null;
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, año);
+			statement.setInt(1, idTipo);
 			rs = statement.executeQuery();
-			if (rs.first())
-				;
-			tipoJJOO = new TipoJJOO(rs.getInt("ID_TIPO_JJOO"), rs.getString("DESCRIPCION_TIPO"));
+			if (rs.first()){
+				tipoJJOO = new TipoJJOO(rs.getInt("ID_TIPO_JJOO"), rs.getString("DESCRIPCION_TIPO"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			DbUtil.close(rs);
 			DbUtil.close(statement);
@@ -52,7 +55,7 @@ public class TipoJJOODAO {
 	}
 
 	public void update(TipoJJOO tipoJJOO) {
-		String query = "UPDATE INTO TIPO_JJOO SET DESCRIPCION_TIPO=? WHERE ID_TIPO_JJOO=?";
+		String query = "UPDATE TIPO_JJOO SET DESCRIPCION_TIPO=? WHERE ID_TIPO_JJOO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);

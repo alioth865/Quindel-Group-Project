@@ -46,5 +46,14 @@ public class Ciudad{
 	public void setVALOR_CIUDAD(int vALOR_CIUDAD) {
 		VALOR_CIUDAD = vALOR_CIUDAD;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if(obj instanceof Ciudad){
+			return ((Ciudad)obj).ID_CIUDAD==this.ID_CIUDAD;
+		}
+		return false;
+	}
 
 }

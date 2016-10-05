@@ -32,18 +32,23 @@ public class SedeJJOODAO {
 		}
 	}
 
-	public SedeJJOO read(int año) throws SQLException {
-		String query = "SELECT * FROM SEDE_JJOO WHERE AÑO= ?";
+	public SedeJJOO read(int año, int idTipo) {
+		String query = "SELECT * FROM SEDE_JJOO WHERE AÑO= ? AND ID_TIPO_JJOO=?";
 		ResultSet rs = null;
 		SedeJJOO sedeJJOO = null;
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, año);
+			statement.setInt(2, idTipo);			
 			rs = statement.executeQuery();
-			if (rs.first())
-				;
-			sedeJJOO = new SedeJJOO(rs.getInt("AÑO"), rs.getInt("ID_TIPO_JJOO"), rs.getInt("SEDE"));
+			if (rs.first()){
+				sedeJJOO = new SedeJJOO(rs.getInt("AÑO"), rs.getInt("ID_TIPO_JJOO"), rs.getInt("SEDE"));
+			}
+				
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			DbUtil.close(rs);
 			DbUtil.close(statement);
@@ -53,13 +58,13 @@ public class SedeJJOODAO {
 	}
 
 	public void update(SedeJJOO sedeJJOO) {
-		String query = "UPDATE INTO SEDE_JJOO SET ID_TIPO_JJOO=?,SEDE=? WHERE AÑO=?";
+		String query = "UPDATE SEDE_JJOO SET SEDE=? WHERE AÑO=? AND ID_TIPO_JJOO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
-			statement.setInt(1, sedeJJOO.getID_TIPO_JJOO());
-			statement.setInt(2, sedeJJOO.getSEDE());
-			statement.setInt(3, sedeJJOO.getAÑO());
+			statement.setInt(1, sedeJJOO.getSEDE());
+			statement.setInt(2, sedeJJOO.getAÑO());
+			statement.setInt(3, sedeJJOO.getID_TIPO_JJOO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -73,11 +78,12 @@ public class SedeJJOODAO {
 		/*
 		 * DELETE FROM table_name WHERE some_column=some_value;
 		 */
-		String query = "DELETE FROM SEDE_JJOO WHERE AÑO=?";
+		String query = "DELETE FROM SEDE_JJOO WHERE AÑO=? AND ID_TIPO_JJOO=?";
 		try {
 			connection = DbConnection.getConnection();
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, sedeJJOO.getAÑO());
+			statement.setInt(2, sedeJJOO.getID_TIPO_JJOO());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

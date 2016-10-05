@@ -21,4 +21,13 @@ public class TipoJJOO {
 		DESCRIPCION_TIPO = dESCRIPCION_TIPO;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if(obj instanceof TipoJJOO){
+			return ((TipoJJOO)obj).ID_TIPO_JJOO==this.ID_TIPO_JJOO;
+		}
+		return false;
+	}
+	
 }
