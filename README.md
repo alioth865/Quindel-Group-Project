@@ -1,4 +1,4 @@
-# Indel-Group-Project
+# Quindel-Group-Project
 ## Consulta SQL Tarea 2
 ```sql
 Select PAIS.ID_PAIS, 
